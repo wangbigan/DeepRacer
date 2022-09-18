@@ -7,17 +7,20 @@ def reward_function(params):
     reward = 0.0
 
     # Read input parameters
-    track_width = params['track_width']
+    # track_width = params['track_width']
     distance_from_center = params['distance_from_center']
     speed = params['speed']
     abs_steering = abs(params['steering_angle'])
-    steps = params['steps']
+    # steps = params['steps']
 
-    if distance_from_center > 0.55 * track_width:
-        reward = -3 * steps  # 根据完成脚步数进行负向激励，保证出现该情况，返回值为负
-    elif abs_steering == 0:  # 角度为零时，收益与赛车在中心线行驶收益一致，均为收益最大化
-        reward = 2 * speed
+    if abs_steering == 0:  # 角度为零时，收益与赛车在中心线行驶收益一致，均为收益最大化
+        reward += 1
     else:
-        reward = 2 * speed / (distance_from_center + 1)
+        reward += 1 / (distance_from_center + 1)
+
+    if params['all_wheels_on_track']:
+        reward += params['progress']
+
+    reward += speed / 8
 
     return float(reward)
