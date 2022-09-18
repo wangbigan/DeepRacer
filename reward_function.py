@@ -21,6 +21,6 @@ def reward_function(params):
     if params['all_wheels_on_track']:
         reward += params['progress']
 
-    reward += speed / 8
+    reward += (speed / 4)
 
     return float(reward)
