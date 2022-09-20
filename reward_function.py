@@ -8,20 +8,15 @@ def reward_function(params):
     reward = 0.0
 
     # Read input parameters
-    # track_width = params['track_width']
     distance_from_center = params['distance_from_center']
     speed = params['speed']
     abs_steering = abs(params['steering_angle'])
-    # steps = params['steps']
 
-    if abs_steering == 0:  # 角度为零时，收益与赛车在中心线行驶收益一致，均为收益最大化
-        reward += 1
-    else:
-        reward += 1 / (distance_from_center + 1)
+    reward += 1 / (abs_steering / 100 + 1)  # 角度越小，奖励越高，角度为零和在中心线上行驶奖励同时最大化
+    reward += 1 / (distance_from_center + 1)  # 越靠近中心，奖励越高
+    reward += (speed / 2)
 
     if params['all_wheels_on_track']:
-        reward += params['progress']
-
-    reward += (speed / 4)
+        reward += (params['progress'] / 2)  # 完成度越高，奖励越高
 
     return float(reward)
